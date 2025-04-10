@@ -26,17 +26,17 @@ def get_db():
 
 
 @app.get("/")
-async def root():
+def root():
     return {"message": "Hello, World"}
 
 
 @app.get("/authors/", response_model=list[schemas.Author])
-async def read_authors(db: Session = Depends(get_db)):
+def read_authors(db: Session = Depends(get_db)):
     return crud.get_all_author_list(db=db)
 
 
 @app.post("/authors/", response_model=schemas.Author)
-async def create_authors(author: schemas.AuthorCreate, db: Session = Depends(get_db)):
+def create_authors(author: schemas.AuthorCreate, db: Session = Depends(get_db)):
     return crud.create_author(db=db, author=author)
 
 
@@ -49,20 +49,20 @@ def get_author(author_id: int, db: Session = Depends(get_db)):
 
 
 @app.get("/books/", response_model=list[schemas.Book])
-async def read_books(
+def read_books(
     db: Session = Depends(get_db),
 ):
     return crud.get_book_list(db=db)
 
 
 @app.get("/books/author/{author_id}", response_model=List[schemas.Book])
-async def get_books_by_author(author_id: int, db: Session = Depends(get_db)):
+def get_books_by_author(author_id: int, db: Session = Depends(get_db)):
     books = crud.get_books_by_author(db=db, author_id=author_id)
     return books
 
 
 @app.post("/books/", response_model=schemas.Book)
-async def create_book(
+def create_book(
     book: schemas.BookCreate,
     author_id: int,
     db: Session = Depends(get_db),
